@@ -1,4 +1,4 @@
-function Cowboy1 (ctx) {
+function Cowboy (ctx) {
     this.ctx = ctx;
 
     //posición aleatoria
@@ -14,14 +14,14 @@ function Cowboy1 (ctx) {
     //obtener una imagen de cowboy aleatoria
     var n = [1, 2, 3];
     var nRamdom = n[Math.floor(Math.random() * n.length)];
-    console.log(nRamdom);
+    
 
     this.img.src = "./assets/img/cowboy" + nRamdom + ".png";
 
 }
 
 
-Cowboy1.prototype.draw = function() {
+Cowboy.prototype.draw = function() {
     this.ctx.drawImage(
       this.img,
       this.x,
