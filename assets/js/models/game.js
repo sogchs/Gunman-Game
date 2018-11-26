@@ -10,7 +10,7 @@ function Game (canvas) {
 
     this.pointer = new Pointer(this.ctx);
 
-    this.activeCowboy = [];
+    // this.activeCowboy = [];
     
 
     
@@ -60,9 +60,9 @@ Game.prototype.start = function() {
 //   };
 
 
-  Game.prototype.activeCowboy = function () {
+  // Game.prototype.activeCowboy = function () {
 
-  }
+  // }
 
 
   

@@ -28,12 +28,12 @@ CowboyGroup.prototype.move = function() {
 
 CowboyGroup.prototype.generateCowboy = function() {
 
-    var random = Math.floor(Math.random() * HOLES.length);
+    var random = Math.floor(Math.random() * this.cowboys.length);
   
     if (this.drawCounter % random === 0) {
       this.drawCounter = 0;
   
-      this.obstacles.push(
+      this.cowboys.push(
         new Cowboy1(this.ctx)
       );
     }

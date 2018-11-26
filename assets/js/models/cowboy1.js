@@ -1,18 +1,22 @@
-function Cowboy1 (ctx, x, y) {
+function Cowboy1 (ctx) {
     this.ctx = ctx;
 
-    this.x = x || 0;
-    this.y = y || 0;
+    //posición aleatoria
+    var randomHole = HOLES[Math.floor(Math.random() * HOLES.length)];
+    this.x = randomHole.x;
+    this.y = randomHole.y;
 
     this.w = 65;
     this.h = 113;
 
     this.img = new Image();
-    this.img.src = "./assets/img/cowboy1.png";
 
-    this.holes = HOLES;
+    //obtener una imagen de cowboy aleatoria
+    var n = [1, 2, 3];
+    var nRamdom = n[Math.floor(Math.random() * n.length)];
+    console.log(nRamdom);
 
-    // this.ctx.randomHoles();
+    this.img.src = "./assets/img/cowboy" + nRamdom + ".png";
 
 }
 
@@ -26,11 +30,3 @@ Cowboy1.prototype.draw = function() {
       this.h
     );
 }
-
-
-// Cowboy.prototype.randomHoles = function () {
-//     this.holes.sort(function(){
-//       return Math.floor(Math.random() * HOLES.length);
-//     })
-//   };
-  
