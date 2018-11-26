@@ -1,0 +1,99 @@
+canvas {
+  border: 3px solid black;
+}
+
+canvas:hover {
+  cursor: none;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  background-color: #3D3D3D;
+}
+
+header img {
+  width: 30%;
+  display: flex;
+  margin: 0 auto;
+  padding: 3em 0;
+}
+.container {
+  width: 900px;
+  margin: 25px auto;
+  display: flex;
+}
+
+.instructions {
+  width: 50%;
+}
+
+.start {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin: 30px 0;
+}
+
+.start img {
+  width: 70%;
+  margin: 0 auto;
+  padding-bottom: 2em;
+
+}
+
+.button-start {
+  background-color: #3D3D3D;
+  color: white;
+  font-family: 'Rye';
+  font-size: 2.5em;
+  letter-spacing: 0.7em;
+  padding: 0.1em 0 0.1em 0.7em;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.button-start:hover {
+  background-color: #3D3D3D;
+  color: #c89e4c;
+  font-family: 'Rye';
+  font-size: 2.5em;
+  letter-spacing: 0.7em;
+  padding: 0.1em 0 0.1em 0.7em;
+  margin: 0 auto;
+  width: 80%;
+  border: 3px solid #c89e4c;
+}
+
+.display {
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-evenly;
+  background-color: slategrey;
+  padding: 15px 0;
+}
+
+h1 {
+  font-family: 'Rye';
+  font-size: 2.4em;
+}
+
+p {
+  font-family: 'IM Fell English';
+  font-size: 1.2em;
+}
+
+li {
+  font-family: 'IM Fell English';
+  font-size: 1.2em;
+  padding-bottom: 1em;
+}
+
+span {
+  font-family: 'Rye';
+  font-size: 2.8em;
+}
+
