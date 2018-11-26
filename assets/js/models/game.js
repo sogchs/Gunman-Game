@@ -66,6 +66,15 @@ Game.prototype.start = function() {
         this.ctx.canvas.height
         );
   }
+  //a este le tengo que asignar un boton para que pare el juego a parte de que se ejecute cuanto termine el tiempo
+  Game.prototype.stop = function () {
+    clearInterval(this.drawIntervalId);
+    this.drawIntervalId = undefined;
+  }
+
+  Game.prototype.onKeyEvent = function(event) {
+    this.pointer.onKeyEvent(event);
+  }
 
 
 

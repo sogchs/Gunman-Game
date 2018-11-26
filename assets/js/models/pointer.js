@@ -12,6 +12,8 @@ function Pointer (ctx) {
         this.y = event.clientY - this.h / 2;
     }.bind(this));
 
+    this.actions = {shoot: false}
+
 }
 
 
@@ -24,4 +26,16 @@ Pointer.prototype.draw = function() {
       this.h
     );
 }
+
+Pointer.prototype.onKeyEvent = function (event) {
+    
+    var state = event.type === 'keydown' ? true : false;
+    switch (event.keyCode) {
+      case KEY_S:
+        this.actions.shoot = state;
+        break;
+
+    }
+  }
+  
 

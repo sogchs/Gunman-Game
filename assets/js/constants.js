@@ -2,6 +2,8 @@ var DRAW_INTERVAL_MS = 1000 / 60;
 
 var COWBOY_INTERVAL = 50;
 
+var KEY_S = 83;
+
 var HOLES = [
     //left house
 {x:'95', y:'170'},

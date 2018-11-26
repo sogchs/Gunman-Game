@@ -6,7 +6,7 @@ function Cowboy (ctx) {
     this.x = randomHole.x;
     this.y = randomHole.y;
 
-    this.w = 65;
+    this.w = 77;
     this.h = 113;
 
     this.img = new Image();
@@ -30,3 +30,7 @@ Cowboy.prototype.draw = function() {
       this.h
     );
 }
+
+
+
+  
