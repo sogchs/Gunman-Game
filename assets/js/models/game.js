@@ -13,6 +13,8 @@ function Game (canvas) {
 
     this.cowboys = [];
 
+    document.addEventListener('keyS', this.onKeyEvent.bind(this));
+
 }
 
 Game.prototype.start = function() {
@@ -38,6 +40,8 @@ Game.prototype.start = function() {
     
     this.pointer.draw();
     this.drawIntervalCount++;
+
+    
 
   }
   
@@ -72,10 +76,19 @@ Game.prototype.start = function() {
     this.drawIntervalId = undefined;
   }
 
-  Game.prototype.onKeyEvent = function(event) {
-    this.pointer.onKeyEvent(event);
+  //funcion para saber si hay un cowboy y el puntero en la misma posicion
+  Game.prototype.onSamePosition = function() {
+    
   }
 
+  //funcion para disparar
+  Game.prototype.shoot = function() {
+
+  }
+
+  Game.prototype.onKeyEvent = function(event) {
+    this.shoot.onKeyEvent(event);
+  }
 
 
 

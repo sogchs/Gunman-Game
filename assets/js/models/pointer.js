@@ -12,7 +12,13 @@ function Pointer (ctx) {
         this.y = event.clientY - this.h / 2;
     }.bind(this));
 
-    this.actions = {shoot: false}
+    this.setListeners();
+
+    audio = document.getElementById("shoot-sound");
+    audio.controls = true;
+
+    bullets = document.getElementsByClassName("bullets");
+    
 
 }
 
@@ -27,15 +33,39 @@ Pointer.prototype.draw = function() {
     );
 }
 
-Pointer.prototype.onKeyEvent = function (event) {
-    
-    var state = event.type === 'keydown' ? true : false;
-    switch (event.keyCode) {
-      case KEY_S:
-        this.actions.shoot = state;
-        break;
-
+Pointer.prototype.setListeners = function() {
+    document.onkeydown = this.onKeyS.bind(this);
+  }
+  
+Pointer.prototype.onKeyS = function(event) {
+    if (event.keyCode === KEY_S) {
+      console.log("disparando")
+      //audios
+      this.loadAudio();
+      this.playAudio();
+      this.resBullets();
     }
   }
+
+
+
+//comandos del audio
+Pointer.prototype.playAudio = function() { 
+    audio.play(); 
+} 
+Pointer.prototype.loadAudio = function() { 
+    audio.load(); 
+} 
+
+
+//Resta de balas
+Pointer.prototype.resBullets = function() {
+    if (!bullets === 0) {
+        bullets--;
+    }
+}
+
+
+
   
 
