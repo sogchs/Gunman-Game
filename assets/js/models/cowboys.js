@@ -52,4 +52,11 @@ Cowboy.prototype.animate = function() {
 }
 
 
-  
+Cowboy.prototype.onSamePosition = function(pointer) {
+    if (pointer.x > this.x 
+        && pointer.y > this.y
+        && pointer.x + pointer.w < this.w + this.x
+        && pointer.y + pointer.h < this.h + this.y) {
+          return true;
+        }
+  }

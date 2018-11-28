@@ -8,6 +8,10 @@
     <link href="./assets/css/style.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Rye" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=IM+Fell+English" rel="stylesheet">
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+  crossorigin="anonymous"></script>
 </head>
 <body>
     
@@ -16,6 +20,7 @@
 
     <script src="./assets/js/constants.js"></script>
     <script src="./assets/js/models/pointer.js"></script>
+    <script src="./assets/js/models/hurt.js"></script>
     <script src="./assets/js/models/cowboys.js"></script>
     <script src="./assets/js/models/houses.js"></script>
     <script src="./assets/js/models/background.js"></script>
@@ -26,17 +31,18 @@
     <canvas width="1200" height="600" id="my-canvas"></canvas>
     
     <audio id="shoot-sound" src="./assets/sound/shot.mp3"></audio>
+    <audio id="ah-sound" src="./assets/sound/Oh No.mp3"></audio>
     
     
     <div class="display">
         <div class="bullets">
             <img src="./assets/img/bullet.png" alt="Bullets Img">
-            <span>50</span>
+            <span id="bullets">50</span>
         </div>
 
         <div class="dollars">
             <img src="./assets/img/dollars.png" alt="Dollars Img">
-            <span>0$</span>
+            <span id = "dollars">0</span>
         </div>
 
         <div class="time">
