@@ -24,6 +24,10 @@ function Game (canvas) {
 
     this.dollars = 0;
     this.bullets = 50;
+
+    this.count = 60;
+    this.time = document.getElementById('time');
+    this.timeInterval = undefined;
    
 
 }
@@ -38,13 +42,13 @@ Game.prototype.start = function() {
     }
     this.draw();
 
-    if (this.bullets === 0) {
+    if (this.bullets <= -1) {
       this.gameOver();
     }
   
     }.bind(this), DRAW_INTERVAL_MS)
 
-    
+    this.timeGame();
   }
   
   Game.prototype.draw = function() {
@@ -88,9 +92,15 @@ Game.prototype.start = function() {
     clearInterval(this.drawIntervalId);
     this.drawIntervalId = undefined;
   }
+
+
+
   Game.prototype.gameOver = function() {
-    //debe sacar una pantalla para volver a empezar
-    alert();
+    $('#pop-up').removeClass('pop-up-off').addClass('pop-up-on');
+    this.stop();
+
+    $('#reward').empty();
+    $('#reward').text(this.dollars + '$');
   }
 
 
@@ -109,8 +119,13 @@ Game.prototype.start = function() {
         $('#dollars').empty();
         this.dollars++;
         $('#dollars').text(this.dollars + '$');
-
+    
         this.playAudioAh();
+
+        setTimeout(function() {
+          this.hurt.draw();
+        }.bind(this), 3000);
+        //aqui quiero que pinte la sangre y esta pintura desaparezca en un segundo
       };
       //audios
       this.loadAudioShoot();
@@ -137,5 +152,18 @@ Game.prototype.resBullets = function() {
   $('#bullets').empty();
   this.bullets--;
   $('#bullets').text(this.bullets);
-
 }
+
+//Tiempo regresivo
+Game.prototype.timeGame = function(){
+  this.timeInterval = setInterval(function(){
+  this.count--; 
+  this.time.innerHTML = this.count;
+    if(this.count <= 0){
+      clearInterval(this.time);
+      this.gameOver();
+     }
+ }.bind(this), 1000);
+}
+
+

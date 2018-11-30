@@ -1,8 +1,8 @@
 function Hurt (ctx) {
     this.ctx = ctx;
 
-    this.w = 26;
-    this.h = 24;
+    this.w = 45;
+    this.h = 45;
 
     this.img = new Image();
     this.img.src = "./assets/img/hurt.png";
