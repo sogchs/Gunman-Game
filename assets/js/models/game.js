@@ -7,10 +7,8 @@ function Game (canvas) {
     this.holes = new Holes(this.ctx);
     this.bg = new Background(this.ctx);
     this.houses = new Houses(this.ctx);
-    this.cowboy = new Cowboy(this.ctx);
-    this.cowboy2 = new Cowboy(this.ctx);
     this.pointer = new Pointer(this.ctx);
-    this.hurt = new Hurt(this.ctx);
+    this.hurts = [];
 
     this.cowboys = [];
 
@@ -28,8 +26,11 @@ function Game (canvas) {
     this.count = 60;
     this.time = document.getElementById('time');
     this.timeInterval = undefined;
-   
 
+   // volver a empezar desde el boton try again "No funciona"
+    $("#try-again").click(function(){
+      this.start();
+});
 }
 
 Game.prototype.start = function() {
@@ -42,20 +43,26 @@ Game.prototype.start = function() {
     }
     this.draw();
 
-    if (this.bullets <= -1) {
+    if (this.bullets <= 0) {
       this.gameOver();
     }
   
     }.bind(this), DRAW_INTERVAL_MS)
 
     this.timeGame();
+  
   }
   
+
   Game.prototype.draw = function() {
     this.holes.draw();
 
     this.cowboys.forEach(function(cowboy) {
       cowboy.draw();
+    })
+
+    this.hurts.forEach(function(hurt) {
+      hurt.draw();
     })
     
     this.bg.draw();
@@ -65,15 +72,32 @@ Game.prototype.start = function() {
     this.drawIntervalCount++;
 
   }
-  
 
   Game.prototype.addCowboy = function(){
     var cowboy = new Cowboy(this.ctx);
     this.cowboys.push(cowboy);
+    
     setTimeout(function() {
       var index = this.cowboys.indexOf(cowboy);
-      this.cowboys.splice(index, 1);
+      if (index !== -1){
+        this.cowboys.splice(index, 1);
+      } 
     }.bind(this), 2000);
+  
+  }
+
+ 
+
+  Game.prototype.addHurt = function(){
+    var hurt = new Hurt(this.ctx, this.x, this.y);
+    this.hurts.push(hurt);
+    
+    setTimeout(function() {
+      var index = this.hurts.indexOf(hurt);
+      if (index !== -1) {
+        this.hurts.splice(index, 1);
+      }
+    }.bind(this), 1000);
   }
 
 
@@ -89,15 +113,16 @@ Game.prototype.start = function() {
 
   //a este le tengo que asignar un boton para que pare el juego a parte de que se ejecute cuanto termine el tiempo
   Game.prototype.stop = function () {
-    clearInterval(this.drawIntervalId);
+    clearInterval(this.intervalId);
     this.drawIntervalId = undefined;
   }
 
 
 
   Game.prototype.gameOver = function() {
-    $('#pop-up').removeClass('pop-up-off').addClass('pop-up-on');
     this.stop();
+
+    $('#pop-up').removeClass('pop-up-off').addClass('pop-up-on');
 
     $('#reward').empty();
     $('#reward').text(this.dollars + '$');
@@ -107,26 +132,28 @@ Game.prototype.start = function() {
   Game.prototype.setListeners = function() {
     document.onkeydown = this.onKeyS.bind(this);
   }
-  
+
   Game.prototype.onKeyS = function(event) {
-    if (event.keyCode === KEY_S) {
+    if (event.keyCode === KEY_S && this.bullets >= 0) {
       console.log("disparando")
       this.resBullets();
-        
-      console.log(this.dollars);
-      if (this.cowboy.onSamePosition(this.pointer)) {
+      console.log(this.cowboys);
+      var cowboy = this.cowboys.find(function(cowboy) {
+        return cowboy.onSamePosition(this.pointer);
+      }.bind(this)
+      );
+
+      if (cowboy) {
         console.log('sangre');
         $('#dollars').empty();
         this.dollars++;
         $('#dollars').text(this.dollars + '$');
     
         this.playAudioAh();
+         //aqui quiero que pinte la sangre y esta pintura desaparezca en un segund
+        this.addHurt();
+      }
 
-        setTimeout(function() {
-          this.hurt.draw();
-        }.bind(this), 3000);
-        //aqui quiero que pinte la sangre y esta pintura desaparezca en un segundo
-      };
       //audios
       this.loadAudioShoot();
       this.playAudioShoot();
@@ -157,12 +184,15 @@ Game.prototype.resBullets = function() {
 //Tiempo regresivo
 Game.prototype.timeGame = function(){
   this.timeInterval = setInterval(function(){
-  this.count--; 
-  this.time.innerHTML = this.count;
-    if(this.count <= 0){
-      clearInterval(this.time);
+  if (this.bullets > 0 || this.count > 0){
+    this.count--; 
+    this.time.innerHTML = this.count;
+    if(this.count === 0){
       this.gameOver();
      }
+  }
+ 
+
  }.bind(this), 1000);
 }
 
