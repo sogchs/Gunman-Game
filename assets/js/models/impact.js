@@ -1,11 +1,11 @@
-function Hurt (ctx) {
+function Impact (ctx) {
     this.ctx = ctx;
 
-    this.w = 65;
-    this.h = 65;
+    this.w = 75;
+    this.h = 75;
 
     this.img = new Image();
-    this.img.src = "./assets/img/hurt.png";
+    this.img.src = "./assets/img/impact.png";
     this.img.frames = 6;
     this.img.frameIndex = 0;
     this.drawCount = 0;
@@ -17,7 +17,7 @@ function Hurt (ctx) {
 }
 
 
-Hurt.prototype.draw = function() {
+Impact.prototype.draw = function() {
     this.drawCount++;
     this.ctx.drawImage(
         this.img,
@@ -31,13 +31,13 @@ Hurt.prototype.draw = function() {
         this.h
     );
     
-    if (this.drawCount % 12 === 0) {
+    if (this.drawCount % 8 === 0) {
       this.animate();
       this.drawCount = 0;
     }
 }
 
-Hurt.prototype.animate = function() {
+Impact.prototype.animate = function() {
     this.img.frameIndex++;
     if (this.img.frameIndex === this.img.frames) {
       this.img.frameIndex = 0;

@@ -12,6 +12,7 @@ function Game (canvas) {
     this.hurts = [];
     this.birds = [];
     this.barrels = [];
+    this.impacts = [];
     this.cowboys = [];
 
     this.setListeners();
@@ -21,6 +22,12 @@ function Game (canvas) {
 
     audioAh = document.getElementById("ah-sound");
     audioAh.controls = true;
+
+    audioBird = document.getElementById("bird");
+    audioBird.controls = true;
+
+    audioWood = document.getElementById("wood");
+    audioWood.controls = true;
 
     this.dollars = 0;
     this.bullets = 50;
@@ -76,6 +83,10 @@ Game.prototype.start = function() {
     this.barrels.forEach(function(barrel) {
       barrel.draw();
     })
+
+    this.impacts.forEach(function(impact) {
+      impact.draw();
+    })
     
 
     this.houses.draw();
@@ -110,7 +121,7 @@ Game.prototype.start = function() {
       if (index !== -1) {
         this.hurts.splice(index, 1);
       }
-    }.bind(this), 500);
+    }.bind(this), 700);
   }
 
 
@@ -123,6 +134,18 @@ Game.prototype.start = function() {
     var barrel = new Barrel(this.ctx, this.x, this.y);
     this.barrels.push(barrel);
     console.log("funcion add barrel")
+  }
+
+  Game.prototype.addImpact = function(){
+    var impact = new Impact(this.ctx, this.x, this.y);
+    this.impacts.push(impact);
+    
+    setTimeout(function() {
+      var index = this.impacts.indexOf(impact);
+      if (index !== -1) {
+        this.impacts.splice(index, 1);
+      }
+    }.bind(this), 700);
   }
 
 
@@ -181,6 +204,7 @@ Game.prototype.start = function() {
       //condicion sin nos quedamos con 10 bullets
       if(this.bullets === 10){
         this.addBird();
+        this.playAudioBird();
       }
       var bird = this.birds.find(function(bird) {
         return bird.onSamePositionBird(this.pointer);
@@ -192,6 +216,7 @@ Game.prototype.start = function() {
         $('#bullets').text(this.bullets);
         this.birds.splice(bird);
         console.log(this.birds);
+        this.addImpact();
       }
       
       //condicion sin nos quedamos con 6 segundos
@@ -209,6 +234,8 @@ Game.prototype.start = function() {
         $('#time').text(this.count);
         this.barrels.splice(barrel);
         console.log(this.barrels);
+        this.addImpact();
+        this.playAudioWood();
       }
       //audios del disparo
       this.loadAudioShoot();
@@ -228,6 +255,12 @@ Game.prototype.loadAudioShoot = function() {
 } 
 Game.prototype.playAudioAh = function() { 
   audioAh.play(); }
+
+Game.prototype.playAudioBird = function() { 
+  audioBird.play(); }
+
+Game.prototype.playAudioWood = function() { 
+  audioWood.play(); }
 
 
 //Resta de balas
