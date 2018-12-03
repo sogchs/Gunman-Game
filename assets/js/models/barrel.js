@@ -46,3 +46,10 @@ Barrel.prototype.animate = function() {
       this.img.frameIndex = 0;
     }
 }
+
+Barrel.prototype.onSamePositionBarrel = function(barrel) {  
+    return barrel.x > this.x 
+        && barrel.y > this.y
+        && barrel.x + barrel.w < this.w + this.x
+        && barrel.y + barrel.h < this.h + this.y;       
+}

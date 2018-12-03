@@ -8,10 +8,10 @@ function Game (canvas) {
     this.bg = new Background(this.ctx);
     this.houses = new Houses(this.ctx);
     this.pointer = new Pointer(this.ctx);
-    //this.bird = new Bird(this.ctx);
-    this.barrel = new Barrel(this.ctx);
+  
     this.hurts = [];
     this.birds = [];
+    this.barrels = [];
     this.cowboys = [];
 
     this.setListeners();
@@ -72,6 +72,10 @@ Game.prototype.start = function() {
     this.birds.forEach(function(bird) {
       bird.draw();
     })
+
+    this.barrels.forEach(function(barrel) {
+      barrel.draw();
+    })
     
 
     this.houses.draw();
@@ -106,14 +110,19 @@ Game.prototype.start = function() {
       if (index !== -1) {
         this.hurts.splice(index, 1);
       }
-    }.bind(this), 1000);
+    }.bind(this), 500);
   }
 
 
   Game.prototype.addBird = function(){
     var bird = new Bird(this.ctx, this.x, this.y);
     this.birds.push(bird);
+  }
 
+  Game.prototype.addBarrel = function(){
+    var barrel = new Barrel(this.ctx, this.x, this.y);
+    this.barrels.push(barrel);
+    console.log("funcion add barrel")
   }
 
 
@@ -168,11 +177,11 @@ Game.prototype.start = function() {
          //aqui quiero que pinte la sangre y esta pintura desaparezca en un segund
         this.addHurt();
       }
+
+      //condicion sin nos quedamos con 10 bullets
       if(this.bullets === 10){
         this.addBird();
-        
       }
-
       var bird = this.birds.find(function(bird) {
         return bird.onSamePositionBird(this.pointer);
       }.bind(this)
@@ -184,9 +193,23 @@ Game.prototype.start = function() {
         this.birds.splice(bird);
         console.log(this.birds);
       }
-
       
-
+      //condicion sin nos quedamos con 6 segundos
+      if(this.count === 6){
+        this.addBarrel();
+        console.log("En tiempo");
+      }
+      var barrel = this.barrels.find(function(barrel) {
+        return barrel.onSamePositionBarrel(this.pointer);
+      }.bind(this)
+      );
+      if (barrel) {
+        console.log(this.barrel);
+        this.count = this.count + 15;
+        $('#time').text(this.count);
+        this.barrels.splice(barrel);
+        console.log(this.barrels);
+      }
       //audios del disparo
       this.loadAudioShoot();
       this.playAudioShoot();
