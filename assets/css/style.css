@@ -12,6 +12,11 @@ audio {
 
 body {
   margin: 0;
+  display: flex;
+}
+
+.body-canvas {
+  background-color: aliceblue;
 }
 
 header {
@@ -79,9 +84,10 @@ header img {
 .display {
   display: flex;
   margin: 0 auto;
-  justify-content: space-evenly;
-  background-color: slategrey;
+  flex-direction: column;
+  justify-content: space-evenly; 
   padding: 15px 0;
+  align-items: center;
 }
 .pop-up-off {
   display: none;

@@ -52,9 +52,10 @@ Cowboy.prototype.animate = function() {
 }
 
 
-Cowboy.prototype.onSamePosition = function(pointer) {
+Cowboy.prototype.onSamePositionCowboy = function(pointer) {
+    console.log(pointer.x, pointer.y);
     return pointer.x > this.x 
         && pointer.y > this.y
         && pointer.x + pointer.w < this.w + this.x
-        && pointer.y + pointer.h < this.h + this.y;
+        && pointer.y + pointer.h < this.h + this.y;       
 }

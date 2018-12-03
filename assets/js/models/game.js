@@ -8,8 +8,10 @@ function Game (canvas) {
     this.bg = new Background(this.ctx);
     this.houses = new Houses(this.ctx);
     this.pointer = new Pointer(this.ctx);
+    //this.bird = new Bird(this.ctx);
+    this.barrel = new Barrel(this.ctx);
     this.hurts = [];
-
+    this.birds = [];
     this.cowboys = [];
 
     this.setListeners();
@@ -27,10 +29,8 @@ function Game (canvas) {
     this.time = document.getElementById('time');
     this.timeInterval = undefined;
 
-   // volver a empezar desde el boton try again "No funciona"
-    $("#try-again").click(function(){
-      this.start();
-});
+
+
 }
 
 Game.prototype.start = function() {
@@ -50,7 +50,8 @@ Game.prototype.start = function() {
     }.bind(this), DRAW_INTERVAL_MS)
 
     this.timeGame();
-  
+
+
   }
   
 
@@ -66,9 +67,17 @@ Game.prototype.start = function() {
     })
     
     this.bg.draw();
-    this.houses.draw();
+
     
+    this.birds.forEach(function(bird) {
+      bird.draw();
+    })
+    
+
+    this.houses.draw();
     this.pointer.draw();
+
+    
     this.drawIntervalCount++;
 
   }
@@ -101,6 +110,13 @@ Game.prototype.start = function() {
   }
 
 
+  Game.prototype.addBird = function(){
+    var bird = new Bird(this.ctx, this.x, this.y);
+    this.birds.push(bird);
+
+  }
+
+
   
   Game.prototype.clear = function() {
     this.ctx.clearRect(
@@ -115,13 +131,12 @@ Game.prototype.start = function() {
   Game.prototype.stop = function () {
     clearInterval(this.intervalId);
     this.drawIntervalId = undefined;
+    this.timeInterval = undefined;
   }
-
 
 
   Game.prototype.gameOver = function() {
     this.stop();
-
     $('#pop-up').removeClass('pop-up-off').addClass('pop-up-on');
 
     $('#reward').empty();
@@ -134,15 +149,15 @@ Game.prototype.start = function() {
   }
 
   Game.prototype.onKeyS = function(event) {
-    if (event.keyCode === KEY_S && this.bullets >= 0) {
+    if (event.keyCode === KEY_S && this.bullets > 0) {
       console.log("disparando")
       this.resBullets();
-      console.log(this.cowboys);
+      
       var cowboy = this.cowboys.find(function(cowboy) {
-        return cowboy.onSamePosition(this.pointer);
+        return cowboy.onSamePositionCowboy(this.pointer);
       }.bind(this)
       );
-
+      
       if (cowboy) {
         console.log('sangre');
         $('#dollars').empty();
@@ -153,8 +168,26 @@ Game.prototype.start = function() {
          //aqui quiero que pinte la sangre y esta pintura desaparezca en un segund
         this.addHurt();
       }
+      if(this.bullets === 10){
+        this.addBird();
+        
+      }
 
-      //audios
+      var bird = this.birds.find(function(bird) {
+        return bird.onSamePositionBird(this.pointer);
+      }.bind(this)
+      );
+      if (bird) {
+        console.log(this.birds);
+        this.bullets = this.bullets + 15;
+        $('#bullets').text(this.bullets);
+        this.birds.splice(bird);
+        console.log(this.birds);
+      }
+
+      
+
+      //audios del disparo
       this.loadAudioShoot();
       this.playAudioShoot();
       
@@ -181,19 +214,19 @@ Game.prototype.resBullets = function() {
   $('#bullets').text(this.bullets);
 }
 
-//Tiempo regresivo
-Game.prototype.timeGame = function(){
-  this.timeInterval = setInterval(function(){
-  if (this.bullets > 0 || this.count > 0){
-    this.count--; 
-    this.time.innerHTML = this.count;
-    if(this.count === 0){
-      this.gameOver();
-     }
-  }
- 
 
- }.bind(this), 1000);
+Game.prototype.timeGame = function() {
+  var timeInterval = setInterval(timeFunction.bind(this), 1000);
+  function timeFunction() {
+    if (this.bullets > 0 || this.count > 0){
+      this.count--; 
+      this.time.innerHTML = this.count;
+    }
+    if (this.count === 0 || this.bullets === 0) {
+      clearInterval(timeInterval);
+      this.gameOver();
+    }
+  }
 }
 
 
