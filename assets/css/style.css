@@ -6,17 +6,22 @@ canvas:hover {
   cursor: none;
 }
 
-audio {
+.audio {
   display: none;
+}
+
+.audio-game {
+  position: absolute;
+  margin: 630px 0 0 50px;
 }
 
 body {
   margin: 0;
-  display: flex;
 }
 
 .body-canvas {
   background-color: aliceblue;
+  display: flex;
 }
 
 header {
@@ -95,8 +100,8 @@ header img {
 .pop-up-on {
   position: fixed;
   display: block;
-  top: 80px;
-  left: 330px;
+  top: 40px;
+  left: 225px;
   display: flex;
   flex-direction: column;
   align-items: center;

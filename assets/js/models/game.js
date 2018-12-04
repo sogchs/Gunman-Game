@@ -8,7 +8,7 @@ function Game (canvas) {
     this.bg = new Background(this.ctx);
     this.houses = new Houses(this.ctx);
     this.pointer = new Pointer(this.ctx);
-  
+    this.failures = [];
     this.hurts = [];
     this.birds = [];
     this.barrels = [];
@@ -28,6 +28,9 @@ function Game (canvas) {
 
     audioWood = document.getElementById("wood");
     audioWood.controls = true;
+
+    audioBirdDown = document.getElementById("bird-down");
+    audioBirdDown.controls = true;
 
     this.dollars = 0;
     this.bullets = 50;
@@ -87,10 +90,14 @@ Game.prototype.start = function() {
     this.impacts.forEach(function(impact) {
       impact.draw();
     })
-    
+
+    this.failures.forEach(function(failure) {
+      failure.draw();
+    })
 
     this.houses.draw();
     this.pointer.draw();
+
 
     
     this.drawIntervalCount++;
@@ -148,6 +155,18 @@ Game.prototype.start = function() {
     }.bind(this), 700);
   }
 
+  Game.prototype.addFailure = function(){
+    var failure = new Failure(this.ctx, this.x, this.y);
+    this.failures.push(failure);
+    
+    setTimeout(function() {
+      var index = this.failures.indexOf(failure);
+      if (index !== -1) {
+        this.failures.splice(index, 1);
+      }
+    }.bind(this), 700);
+  }
+
 
   
   Game.prototype.clear = function() {
@@ -200,6 +219,13 @@ Game.prototype.start = function() {
          //aqui quiero que pinte la sangre y esta pintura desaparezca en un segund
         this.addHurt();
       }
+      else {
+        console.log("Herido");
+        this.addFailure();
+        $('#dollars').empty();
+        this.dollars--;
+        $('#dollars').text(this.dollars + '$');
+      }
 
       //condicion sin nos quedamos con 10 bullets
       if(this.bullets === 10){
@@ -217,26 +243,9 @@ Game.prototype.start = function() {
         this.birds.splice(bird);
         console.log(this.birds);
         this.addImpact();
+        this.playAudioBirdDown();
       }
-      
-      //condicion sin nos quedamos con 6 segundos
-      if(this.count === 6){
-        this.addBarrel();
-        console.log("En tiempo");
-      }
-      var barrel = this.barrels.find(function(barrel) {
-        return barrel.onSamePositionBarrel(this.pointer);
-      }.bind(this)
-      );
-      if (barrel) {
-        console.log(this.barrel);
-        this.count = this.count + 15;
-        $('#time').text(this.count);
-        this.barrels.splice(barrel);
-        console.log(this.barrels);
-        this.addImpact();
-        this.playAudioWood();
-      }
+
       //audios del disparo
       this.loadAudioShoot();
       this.playAudioShoot();
@@ -261,6 +270,9 @@ Game.prototype.playAudioBird = function() {
 
 Game.prototype.playAudioWood = function() { 
   audioWood.play(); }
+  
+Game.prototype.playAudioBirdDown = function() { 
+  audioBirdDown.play(); }
 
 
 //Resta de balas
@@ -282,6 +294,25 @@ Game.prototype.timeGame = function() {
       clearInterval(timeInterval);
       this.gameOver();
     }
+          
+    //condicion sin nos quedamos con 6 segundos
+    if(this.count === 6){
+    this.addBarrel();
+    console.log("En tiempo");
+    }
+    var barrel = this.barrels.find(function(barrel) {
+      return barrel.onSamePositionBarrel(this.pointer);
+    }.bind(this)
+    );
+    if (barrel) {
+      console.log(this.barrel);
+      this.count = this.count + 10;
+      $('#time').text(this.count);
+      this.barrels.splice(barrel);
+      console.log(this.barrels);
+      this.addImpact();
+      this.playAudioWood();
+          }
   }
 }
 
